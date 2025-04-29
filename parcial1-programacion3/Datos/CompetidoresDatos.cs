@@ -75,5 +75,26 @@ namespace parcial1_programacion3.Datos
                 return lista;
             }
         }
+
+        public List<DisciplinaCantidad> listarCantidad()
+        {
+            List<DisciplinaCantidad> lista = new List<DisciplinaCantidad>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT d.NombreDisciplina, COUNT(c.IDCompetidor) AS CantidadParticipantes FROM Disciplina d LEFT JOIN Competidores c ON d.IDDisciplina = c.IDDisciplina GROUP BY d.NombreDisciplina ORDER BY d.NombreDisciplina DESC";
+                con.Open();
+                SqlCommand cmd = new SqlCommand(query, con);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    lista.Add(new DisciplinaCantidad()
+                    {
+                        NombreDisciplina = reader["NombreDisciplina"].ToString(),
+                        CantidadParticipantes = (int)reader["CantidadParticipantes"]
+                    });
+                }
+                return lista;
+            }
+        }
     }
 }

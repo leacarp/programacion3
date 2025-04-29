@@ -42,5 +42,10 @@ namespace parcial1_programacion3.Controllers
                 return View();
             }
         }
+
+        public IActionResult Participantes()
+        {
+            return View(_BD.listarCantidad());
+        }
     }
 }
